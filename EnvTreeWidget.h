@@ -14,4 +14,14 @@ public:
 };
 
 
+class EnvTreeWidgetItem: public QTreeWidgetItem{
+    
+public:
+    EnvTreeWidgetItem(QTreeWidgetItem * parent)
+        :QTreeWidgetItem(parent)
+    {}
+    void setData(int column, int role, const QVariant &value);
+    void emitDataChanged();
+};
+
 #endif // ENVTREEWIDGET_H

@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->tabWidget->addTab(&treew_SystemEnv, QStringLiteral("SystemEnv"));
     
     EnvTreeWidget *treew_SystemEnv = new EnvTreeWidget(ui->tab_SystemEnv);
+    treew_SystemEnv->setObjectName("treew_SystemEnv");
     //  do not display header
     treew_SystemEnv->header()->close();
     QSize size = treew_SystemEnv->parentWidget()->size();
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createEnvTree(treew_SystemEnv, getSystemEnv());
     
     EnvTreeWidget *treew_UserEnv = new EnvTreeWidget(ui->tab_UserEnv);
+    treew_UserEnv->setObjectName("treew_UserEnv");
     //  do not display header
     treew_UserEnv->header()->close();
     treew_UserEnv->resize( 505, 296);
@@ -68,6 +70,10 @@ QHash<QString, QString> getUserEnv(){
     return settingMap;
 }
 
+void onDataChange(){
+    qDebug() << "hahahahahhhhhhahahahahaha";
+}
+
 void createEnvTree(EnvTreeWidget *tree, const QHash<QString, QString> & settingMap){
      QHashIterator<QString, QString> i(settingMap);
     while (i.hasNext()) {
@@ -78,7 +84,8 @@ void createEnvTree(EnvTreeWidget *tree, const QHash<QString, QString> & settingM
         QTreeWidgetItem *envNameItem =new QTreeWidgetItem(tree);
         envNameItem->setText(0, i.key());
         foreach (QString value, valueSeg) {
-            QTreeWidgetItem *valueItem =new QTreeWidgetItem(envNameItem);
+            EnvTreeWidgetItem *valueItem =new EnvTreeWidgetItem(envNameItem);
+//            QObject::connect(valueItem, &QTreeWidgetItem::emitDataChanged, &onDataChange);
             valueItem->setFlags(valueItem->flags()|Qt::ItemIsEditable);
             valueItem->setText(0, value);
         }
