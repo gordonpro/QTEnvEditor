@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "backup.h"
 #include "EnvTreeWidget.h"
 #include <QSettings>
 #include <QDebug>
 #include <QHBoxLayout>
-
-
+#include <QDateTime>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,14 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     
     ui->tabWidget->setTabText(0, QStringLiteral("用户变量"));
     ui->tabWidget->setTabText(1, QStringLiteral("系统变量"));
-    
-    //  add two EnvTreeWidget
-    //    ui->tab_SystemEnv->setLayout(new QHBoxLayout);
-    //    qDebug() <<  ui->tab_SystemEnv->layout();
-//    EnvTreeWidget treew_SystemEnv(NULL);
-//    treew_SystemEnv.resize(100, 100);
-//    treew_SystemEnv.show();
-//    ui->tabWidget->addTab(&treew_SystemEnv, QStringLiteral("SystemEnv"));
     
     EnvTreeWidget *treew_SystemEnv = new EnvTreeWidget(ui->tab_SystemEnv);
     treew_SystemEnv->setObjectName("treew_SystemEnv");
@@ -40,8 +32,6 @@ MainWindow::MainWindow(QWidget *parent) :
     treew_UserEnv->header()->close();
     treew_UserEnv->resize( 505, 296);
     createEnvTree(treew_UserEnv, getUserEnv());
-    
-    
     
 }
 
@@ -70,9 +60,6 @@ QHash<QString, QString> getUserEnv(){
     return settingMap;
 }
 
-void onDataChange(){
-    qDebug() << "hahahahahhhhhhahahahahaha";
-}
 
 void createEnvTree(EnvTreeWidget *tree, const QHash<QString, QString> & settingMap){
      QHashIterator<QString, QString> i(settingMap);
@@ -85,7 +72,6 @@ void createEnvTree(EnvTreeWidget *tree, const QHash<QString, QString> & settingM
         envNameItem->setText(0, i.key());
         foreach (QString value, valueSeg) {
             EnvTreeWidgetItem *valueItem =new EnvTreeWidgetItem(envNameItem);
-//            QObject::connect(valueItem, &QTreeWidgetItem::emitDataChanged, &onDataChange);
             valueItem->setFlags(valueItem->flags()|Qt::ItemIsEditable);
             valueItem->setText(0, value);
         }
@@ -93,3 +79,10 @@ void createEnvTree(EnvTreeWidget *tree, const QHash<QString, QString> & settingM
 }
 
 
+
+void MainWindow::on_btn_Backup_clicked()
+{
+    writerToFile(createEnvJson());
+    qDebug() << "备份文件完成";
+    
+}

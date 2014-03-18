@@ -4,6 +4,7 @@
 #include "EnvTreeWidget.h"
 #include <QMainWindow>
 #include <QHash>
+#include <QJsonObject>
 
 namespace Ui {
 class MainWindow;
@@ -16,6 +17,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    
+private slots:
+    void on_btn_Backup_clicked();
     
 private:
     Ui::MainWindow *ui;

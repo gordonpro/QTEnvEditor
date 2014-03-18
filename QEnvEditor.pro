@@ -14,9 +14,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    EnvTreeWidget.cpp
+    EnvTreeWidget.cpp \
+    backup.cpp
 
 HEADERS  += mainwindow.h \
-    EnvTreeWidget.h
+    EnvTreeWidget.h \
+    backup.h
 
 FORMS    += mainwindow.ui
